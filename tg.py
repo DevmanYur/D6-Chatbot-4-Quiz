@@ -27,7 +27,6 @@ def start(update: Update, context: CallbackContext) -> None:
 def handle_new_question_request(quiz, redis_object, update: Update, context: CallbackContext):
     unit = random.choice(quiz)
     update.message.reply_text(unit['Вопрос'])
-    chat_id = update.message.chat_id
     redis_object.mset(unit)
 
 
