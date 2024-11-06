@@ -2,10 +2,10 @@ import os
 import random
 
 def get_quiz():
-    folder_for_quiz_questions = 'quiz-questions'
-    files_with_quiz_questions = os.listdir(folder_for_quiz_questions)
-    file_with_quiz_questions = random.choice(files_with_quiz_questions)
-    with open(f'{folder_for_quiz_questions}/{file_with_quiz_questions}', "r", encoding="KOI8-R") as my_file:
+    folder = 'quiz-questions'
+    files = os.listdir(folder)
+    file = random.choice(files)
+    with open(f'{folder}/{file}', "r", encoding="KOI8-R") as my_file:
         file_contents = my_file.read()
     units = file_contents.split('\n\n\n')
     quiz = []
