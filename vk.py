@@ -23,33 +23,41 @@ def start_vk_bot(vk_community_token, redis_object, units):
 
 
     for event in longpoll.listen():
-        if event.type == VkEventType.MESSAGE_NEW and event.to_me:
 
-            if event.text == "Новый вопрос":
-                unit = random.choice(units)
-                redis_object.mset(unit)
-                vk_api.messages.send(
-                    user_id=event.user_id,
-                    message=f'{unit['Вопрос']}',
-                    keyboard=keyboard.get_keyboard(),
-                    random_id=random.randint(1, 1000))
+        if (event.type == VkEventType.MESSAGE_NEW and event.to_me) and event.text == "Новый вопрос":
+            unit = random.choice(units)
+            redis_object.mset(unit)
+            vk_api.messages.send(
+                user_id=event.user_id,
+                message=f'{unit['Вопрос']}',
+                keyboard=keyboard.get_keyboard(),
+                random_id=random.randint(1, 1000))
 
-            if event.text == redis_object.get('Ответ'):
-                vk_api.messages.send(
-                    user_id=event.user_id,
-                    message=f'Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»',
-                    keyboard=keyboard.get_keyboard(),
-                    random_id=random.randint(1, 1000))
+        if (event.type == VkEventType.MESSAGE_NEW and event.to_me) and event.text == redis_object.get('Ответ'):
+            vk_api.messages.send(
+                user_id=event.user_id,
+                message=f'Правильно! Поздравляю! Для следующего вопроса нажми «Новый вопрос»',
+                keyboard=keyboard.get_keyboard(),
+                random_id=random.randint(1, 1000))
 
-            if event.text == "Сдаться":
-                answer = redis_object.get('Ответ')
-                vk_api.messages.send(
-                    user_id=event.user_id,
-                    message=f'Вот тебе правильный ответ: '
-                            f'{answer}',
-                    keyboard=keyboard.get_keyboard(),
-                    random_id=random.randint(1, 1000)
-                )
+        if (event.type == VkEventType.MESSAGE_NEW and event.to_me) and event.text == "Сдаться":
+            answer = redis_object.get('Ответ')
+            vk_api.messages.send(
+                user_id=event.user_id,
+                message=f'Вот тебе правильный ответ: '
+                        f'{answer}',
+                keyboard=keyboard.get_keyboard(),
+                random_id=random.randint(1, 1000)
+            )
+
+        if (event.type == VkEventType.MESSAGE_NEW and event.to_me) and event.text == "Мой счёт":
+            vk_api.messages.send(
+                user_id=event.user_id,
+                message=f'Сделал запрос на Мой счёт.',
+                keyboard=keyboard.get_keyboard(),
+                random_id=random.randint(1, 1000)
+            )
+
     VkLongPoll(vk_session)
 
 
